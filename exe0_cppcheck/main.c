@@ -18,7 +18,7 @@ int main(void) {
 
     for (int i = 0; i < NUM_ELEMENTS; i++) {
         arr[i] = i;
-        sum += arr[i];  r
+        sum += arr[i];  
     }
 
     (void)result;
