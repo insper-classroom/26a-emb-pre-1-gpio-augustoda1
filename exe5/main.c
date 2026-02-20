@@ -5,13 +5,13 @@
 const int BTN1_PIN = 26;
 const int BTN2_PIN = 7;
 
-static bool button_pressed_debounced(int pin) {
+static bool pressed_once(int pin) {
   // pull-up: apertado = 0
   if (!gpio_get(pin)) {
-    sleep_ms(20);                 // filtra bouncing
-    if (!gpio_get(pin)) {         // confirmou que ainda está apertado
-      while (!gpio_get(pin)) {    // espera soltar (evita múltiplas contagens)
-        sleep_ms(10);
+    sleep_ms(20);          // debounce
+    if (!gpio_get(pin)) {  // confirmou que ainda está apertado
+      while (!gpio_get(pin)) {
+        sleep_ms(10);      // espera soltar (1 evento por aperto)
       }
       return true;
     }
@@ -30,18 +30,20 @@ int main(void) {
   gpio_set_dir(BTN2_PIN, GPIO_IN);
   gpio_pull_up(BTN2_PIN);
 
-  int cnt_1 = 0;
-  int cnt_2 = 0;
+  int cnt1 = 0;
+  int cnt2 = 0;
 
   while (true) {
-    if (button_pressed_debounced(BTN1_PIN)) {
-      cnt_1++;
-      printf("Botao 1: %d\n", cnt_1);
+    if (pressed_once(BTN1_PIN)) {
+      printf("Botao 1: %d\n", cnt1);
+      fflush(stdout);
+      cnt1++;
     }
 
-    if (button_pressed_debounced(BTN2_PIN)) {
-      cnt_2++;
-      printf("Botao 2: %d\n", cnt_2);
+    if (pressed_once(BTN2_PIN)) {
+      printf("Botao 2: %d\n", cnt2);
+      fflush(stdout);
+      cnt2++;
     }
 
     sleep_ms(5);
