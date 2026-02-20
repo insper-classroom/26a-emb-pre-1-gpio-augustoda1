@@ -12,12 +12,17 @@ int main(void) {
     int b = 5;
 
     int result = multiplyNumbers(a, b);
-    (void)result;
 
     int arr[NUM_ELEMENTS];
+    int sum = 0;
+
     for (int i = 0; i < NUM_ELEMENTS; i++) {
         arr[i] = i;
+        sum += arr[i];  r
     }
+
+    (void)result;
+    (void)sum;
 
     return 0;
 }
